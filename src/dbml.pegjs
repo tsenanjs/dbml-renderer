@@ -33,7 +33,7 @@ Column = name:ColumnName _ data:ColumnType _ settings:Settings? { return { type:
 ColumnName = Name
 ColumnType = base:(ParameterizedColumnType / QualifiedColumnType / SimpleColumnType) array:("[" _ arg:$[a-zA-Z0-9_,]* _ "]" { return `[${arg}]`; })* { return base + array.join(""); }
 QualifiedColumnType = schema:Schema _ "." _ simple:SimpleColumnType { return schema + "." + simple }
-SimpleColumnType = QuotedName / $[a-zA-Z0-9_,]+
+SimpleColumnType = QuotedName / $[a-zA-Z0-9_]+
 ParameterizedColumnType = outer:SimpleColumnType _ "(" _ args:(head:TypeParameter tail:(_ "," _ entry:TypeParameter { return entry; })* { return [head, ...tail]; } )? _ ")" { return `${outer}(${args.join(",")})`; }
 TypeParameter = ColumnType / String
 
